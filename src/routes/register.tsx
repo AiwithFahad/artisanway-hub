@@ -1,6 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/lib/store";
 
@@ -36,17 +35,14 @@ function RegisterPage() {
     }
   };
 
-  const inputClass = "h-11 w-full rounded-xl border border-input bg-background px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all";
+  const inputClass = "h-11 w-full rounded-lg border border-input bg-background px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all";
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-md flex-col items-center justify-center px-4">
+    <div className="mx-auto flex min-h-[75vh] max-w-md flex-col items-center justify-center px-4 py-10">
       <div className="w-full animate-fade-up">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand">
-            <ShoppingBag className="h-6 w-6 text-brand-foreground" />
-          </div>
           <h1 className="text-2xl font-bold text-foreground">Create your account</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Join millions of buyers and sellers on Craftly</p>
+          <p className="mt-1 text-sm text-muted-foreground">Join the Craftly community</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -65,7 +61,9 @@ function RegisterPage() {
             <label className="mb-1.5 block text-sm font-medium text-foreground">Password</label>
             <input className={inputClass} type="password" placeholder="6+ characters" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <Button variant="brand" size="lg" className="w-full" type="submit">Create Account</Button>
+          <Button className="w-full h-11 rounded-full bg-foreground text-background hover:bg-foreground/90 font-semibold" type="submit">
+            Register
+          </Button>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
