@@ -1,19 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { HeroSection } from "@/components/home/HeroSection";
+import { CategoriesSection } from "@/components/home/CategoriesSection";
+import { FeaturedProducts } from "@/components/home/FeaturedProducts";
+import { PromoSection } from "@/components/home/PromoSection";
 
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Craftly — Handmade, Vintage & Unique Goods Marketplace" },
+      {
+        name: "description",
+        content:
+          "Shop millions of handmade, vintage, and one-of-a-kind items from independent creators worldwide. Find unique gifts, home décor, jewelry, and more.",
+      },
+      { property: "og:title", content: "Craftly — Discover Unique Handmade Goods" },
+      {
+        property: "og:description",
+        content:
+          "Shop millions of handmade, vintage, and one-of-a-kind items from independent creators worldwide.",
+      },
+      { property: "og:type", content: "website" },
+    ],
+  }),
+  component: HomePage,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
+function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
+    <main>
+      <HeroSection />
+      <CategoriesSection />
+      <FeaturedProducts />
+      <PromoSection />
+    </main>
   );
-}
-
-function Index() {
-  return <PlaceholderIndex />;
 }
