@@ -68,7 +68,7 @@ function ProductDetailPage() {
       <nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/" className="hover:text-foreground">Home</Link>
         <span>/</span>
-        <Link to="/search" search={{ category: product.category }} className="hover:text-foreground">{product.category}</Link>
+        <Link to="/search" search={{ q: "", category: product.category }} className="hover:text-foreground">{product.category}</Link>
         <span>/</span>
         <span className="text-foreground">{product.title.slice(0, 40)}...</span>
       </nav>

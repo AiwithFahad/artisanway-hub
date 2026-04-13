@@ -10,7 +10,7 @@ export const Route = createFileRoute("/search")({
     q: (search.q as string) || "",
     category: (search.category as string) || "",
   }),
-  head: ({ search }) => ({
+  head: () => ({
     meta: [
       { title: search.q ? `"${search.q}" — Search Craftly` : "Search — Craftly" },
       { name: "description", content: "Search millions of unique items on Craftly." },
