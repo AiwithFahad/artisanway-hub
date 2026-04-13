@@ -55,22 +55,24 @@ function SearchPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8">
       {/* Search bar */}
       <form onSubmit={handleSearch} className="mb-6">
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+        <div className="relative max-w-2xl">
           <input
             type="text"
-            placeholder="Search for anything..."
+            placeholder="Search for anything"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="h-12 w-full rounded-xl border border-input bg-background pl-12 pr-4 text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+            className="h-11 w-full rounded-full border-2 border-foreground/80 bg-background pl-4 pr-12 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none"
           />
+          <button type="submit" className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-brand text-brand-foreground">
+            <Search className="h-4 w-4" />
+          </button>
         </div>
       </form>
 
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-5">
         <p className="text-sm text-muted-foreground">
           {results.length} result{results.length !== 1 ? "s" : ""}
           {query && <> for "<span className="font-medium text-foreground">{query}</span>"</>}
@@ -79,7 +81,7 @@ function SearchPage() {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="h-9 rounded-lg border border-input bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-brand/20"
+            className="h-9 rounded-full border border-input bg-background px-4 text-sm text-foreground focus:outline-none"
           >
             <option value="popular">Most Popular</option>
             <option value="newest">Newest</option>
@@ -87,26 +89,26 @@ function SearchPage() {
             <option value="price-high">Price: High to Low</option>
             <option value="rating">Top Rated</option>
           </select>
-          <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)} className="lg:hidden">
+          <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)} className="lg:hidden rounded-full">
             <SlidersHorizontal className="h-4 w-4" />
             Filters
           </Button>
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-4">
+      <div className="grid gap-6 lg:grid-cols-5">
         {/* Filters sidebar */}
-        <div className={`space-y-6 ${showFilters ? "block" : "hidden lg:block"}`}>
+        <div className={`space-y-5 ${showFilters ? "block" : "hidden lg:block"}`}>
           <div className="rounded-xl border border-border bg-card p-5">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-foreground">Filters</h3>
+              <h3 className="text-sm font-bold text-foreground">Filters</h3>
               <button onClick={clearFilters} className="text-xs text-brand hover:underline">Clear all</button>
             </div>
 
             {/* Category */}
             <div className="mb-5">
-              <h4 className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Category</h4>
-              <div className="space-y-1.5">
+              <h4 className="mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">Category</h4>
+              <div className="space-y-1">
                 <button
                   onClick={() => setSelectedCategory("")}
                   className={`block w-full rounded-lg px-3 py-1.5 text-left text-sm transition-colors ${
@@ -131,7 +133,7 @@ function SearchPage() {
 
             {/* Price */}
             <div className="mb-5">
-              <h4 className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Price Range</h4>
+              <h4 className="mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">Price Range</h4>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -155,14 +157,14 @@ function SearchPage() {
 
             {/* Rating */}
             <div>
-              <h4 className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Minimum Rating</h4>
+              <h4 className="mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">Minimum Rating</h4>
               <div className="flex gap-1">
                 {[0, 3, 4, 4.5].map((r) => (
                   <button
                     key={r}
                     onClick={() => setMinRating(r)}
-                    className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
-                      minRating === r ? "bg-brand text-brand-foreground" : "bg-secondary text-muted-foreground hover:bg-accent"
+                    className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                      minRating === r ? "bg-foreground text-background" : "bg-secondary text-muted-foreground hover:bg-accent"
                     }`}
                   >
                     {r === 0 ? "Any" : `${r}+⭐`}
@@ -174,18 +176,18 @@ function SearchPage() {
         </div>
 
         {/* Results grid */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-4">
           {/* Active filters */}
           {(selectedCategory || minRating > 0 || priceRange[0] > 0 || priceRange[1] < 200) && (
             <div className="mb-4 flex flex-wrap gap-2">
               {selectedCategory && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-brand/10 px-3 py-1 text-xs font-medium text-brand">
+                <span className="inline-flex items-center gap-1 rounded-full bg-foreground/10 px-3 py-1 text-xs font-medium text-foreground">
                   {selectedCategory}
                   <button onClick={() => setSelectedCategory("")}><X className="h-3 w-3" /></button>
                 </span>
               )}
               {minRating > 0 && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-brand/10 px-3 py-1 text-xs font-medium text-brand">
+                <span className="inline-flex items-center gap-1 rounded-full bg-foreground/10 px-3 py-1 text-xs font-medium text-foreground">
                   {minRating}+ stars
                   <button onClick={() => setMinRating(0)}><X className="h-3 w-3" /></button>
                 </span>
@@ -194,7 +196,7 @@ function SearchPage() {
           )}
 
           {results.length > 0 ? (
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
               {results.map((product) => (
                 <ProductCard key={product.id} product={{ ...product, image: product.images[0], seller: product.seller.name }} />
               ))}
@@ -204,7 +206,7 @@ function SearchPage() {
               <Search className="mb-4 h-12 w-12 text-muted-foreground/30" />
               <h2 className="text-xl font-bold text-foreground">No results found</h2>
               <p className="mt-2 text-sm text-muted-foreground">Try adjusting your search or filters.</p>
-              <Button variant="brand-outline" size="sm" className="mt-4" onClick={clearFilters}>Clear filters</Button>
+              <Button variant="outline" size="sm" className="mt-4 rounded-full" onClick={clearFilters}>Clear filters</Button>
             </div>
           )}
         </div>

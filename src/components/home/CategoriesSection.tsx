@@ -1,39 +1,40 @@
+import { Link } from "@tanstack/react-router";
+
 const categories = [
-  { name: "Jewelry & Accessories", emoji: "💍", color: "from-pink-100 to-rose-50", count: "2.3M items" },
-  { name: "Clothing & Shoes", emoji: "👗", color: "from-violet-100 to-purple-50", count: "1.8M items" },
-  { name: "Home & Living", emoji: "🏡", color: "from-amber-100 to-orange-50", count: "3.1M items" },
-  { name: "Art & Collectibles", emoji: "🎨", color: "from-cyan-100 to-teal-50", count: "890K items" },
-  { name: "Craft Supplies", emoji: "✂️", color: "from-emerald-100 to-green-50", count: "1.2M items" },
-  { name: "Digital Products", emoji: "📱", color: "from-blue-100 to-indigo-50", count: "670K items" },
-  { name: "Weddings", emoji: "💒", color: "from-rose-100 to-pink-50", count: "1.5M items" },
-  { name: "Vintage", emoji: "🕰️", color: "from-yellow-100 to-amber-50", count: "950K items" },
+  { name: "Necklaces", image: "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=200&h=200&fit=crop", category: "Jewelry & Accessories" },
+  { name: "Sewing patterns", image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=200&h=200&fit=crop", category: "Craft Supplies" },
+  { name: "Home and living", image: "https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?w=200&h=200&fit=crop", category: "Home & Living" },
+  { name: "Wall Decor", image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200&h=200&fit=crop", category: "Art & Collectibles" },
+  { name: "Women's Jewelry", image: "https://images.unsplash.com/photo-1515562141589-67f0d569b41e?w=200&h=200&fit=crop", category: "Jewelry & Accessories" },
+  { name: "Stationery", image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=200&h=200&fit=crop", category: "Digital Products" },
 ];
 
 export function CategoriesSection() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mb-8 text-center">
-        <h2 className="text-2xl font-bold text-foreground sm:text-3xl font-display">
-          Shop by Category
-        </h2>
-        <p className="mt-2 text-muted-foreground">
-          Browse our most popular categories
-        </p>
-      </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:gap-4">
+    <section className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6 lg:px-8">
+      <h2 className="mb-6 text-xl font-bold text-foreground sm:text-2xl">
+        Shop our most-loved categories
+      </h2>
+      <div className="flex gap-6 overflow-x-auto pb-2 scrollbar-none">
         {categories.map((cat) => (
-          <button
+          <Link
             key={cat.name}
-            className="group relative flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-5 text-center transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-lg hover:shadow-brand/5"
+            to="/search"
+            search={{ q: "", category: cat.category }}
+            className="group flex shrink-0 flex-col items-center gap-2.5"
           >
-            <span className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br text-2xl ${cat.color}`}>
-              {cat.emoji}
-            </span>
-            <div>
-              <p className="text-sm font-semibold text-foreground">{cat.name}</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">{cat.count}</p>
+            <div className="h-[100px] w-[100px] sm:h-[120px] sm:w-[120px] overflow-hidden rounded-full border-2 border-transparent transition-all group-hover:border-brand group-hover:shadow-lg">
+              <img
+                src={cat.image}
+                alt={cat.name}
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                loading="lazy"
+              />
             </div>
-          </button>
+            <span className="text-xs sm:text-sm font-medium text-foreground text-center max-w-[100px]">
+              {cat.name}
+            </span>
+          </Link>
         ))}
       </div>
     </section>

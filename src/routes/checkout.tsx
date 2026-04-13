@@ -23,24 +23,17 @@ function CheckoutPage() {
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
-    cardNumber: "",
-    expiry: "",
-    cvv: "",
+    name: "", email: "", address: "", city: "", state: "", zip: "",
+    cardNumber: "", expiry: "", cvv: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-7xl flex-col items-center justify-center px-4 text-center">
+      <div className="mx-auto flex min-h-[60vh] max-w-[1400px] flex-col items-center justify-center px-4 text-center">
         <h1 className="text-2xl font-bold text-foreground">Nothing to checkout</h1>
-        <p className="mt-2 text-muted-foreground">Add some items to your cart first.</p>
-        <Button variant="brand" size="lg" className="mt-6" asChild>
+        <p className="mt-2 text-muted-foreground">Add some items to your basket first.</p>
+        <Button className="mt-6 rounded-full bg-foreground text-background hover:bg-foreground/90 px-8" asChild>
           <Link to="/">Browse items</Link>
         </Button>
       </div>
@@ -52,21 +45,17 @@ function CheckoutPage() {
 
   const updateField = (field: string, value: string) => {
     setForm((f) => ({ ...f, [field]: value }));
-    if (errors[field]) setErrors((e) => {
-      const next = { ...e };
-      delete next[field];
-      return next;
-    });
+    if (errors[field]) setErrors((e) => { const next = { ...e }; delete next[field]; return next; });
   };
 
   const validateShipping = () => {
     const errs: Record<string, string> = {};
-    if (!form.name.trim()) errs.name = "Name is required";
-    if (!form.email.trim() || !form.email.includes("@")) errs.email = "Valid email is required";
-    if (!form.address.trim()) errs.address = "Address is required";
-    if (!form.city.trim()) errs.city = "City is required";
-    if (!form.state.trim()) errs.state = "State is required";
-    if (!form.zip.trim()) errs.zip = "ZIP code is required";
+    if (!form.name.trim()) errs.name = "Required";
+    if (!form.email.trim() || !form.email.includes("@")) errs.email = "Valid email required";
+    if (!form.address.trim()) errs.address = "Required";
+    if (!form.city.trim()) errs.city = "Required";
+    if (!form.state.trim()) errs.state = "Required";
+    if (!form.zip.trim()) errs.zip = "Required";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -74,7 +63,7 @@ function CheckoutPage() {
   const validatePayment = () => {
     const errs: Record<string, string> = {};
     if (form.cardNumber.replace(/\s/g, "").length < 16) errs.cardNumber = "Enter a valid card number";
-    if (!form.expiry.trim()) errs.expiry = "Expiry is required";
+    if (!form.expiry.trim()) errs.expiry = "Required";
     if (form.cvv.length < 3) errs.cvv = "Valid CVV required";
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -84,23 +73,14 @@ function CheckoutPage() {
     const order = addOrder({
       items: [...items],
       totalPrice: orderTotal,
-      shippingInfo: {
-        name: form.name,
-        email: form.email,
-        address: form.address,
-        city: form.city,
-        state: form.state,
-        zip: form.zip,
-      },
+      shippingInfo: { name: form.name, email: form.email, address: form.address, city: form.city, state: form.state, zip: form.zip },
     });
     clearCart();
     navigate({ to: "/order-confirmation", search: { orderId: order.id } });
   };
 
   const inputClass = (field: string) =>
-    `h-11 w-full rounded-xl border bg-background px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all ${
-      errors[field] ? "border-destructive" : "border-input"
-    }`;
+    `h-11 w-full rounded-lg border bg-background px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all ${errors[field] ? "border-destructive" : "border-input"}`;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
@@ -113,7 +93,7 @@ function CheckoutPage() {
         ].map((s, i) => (
           <div key={s.n} className="flex items-center gap-2">
             <div className={`flex h-9 items-center gap-2 rounded-full px-4 text-sm font-medium transition-colors ${
-              step >= s.n ? "bg-brand text-brand-foreground" : "bg-secondary text-muted-foreground"
+              step >= s.n ? "bg-foreground text-background" : "bg-secondary text-muted-foreground"
             }`}>
               <s.icon className="h-4 w-4" />
               <span className="hidden sm:inline">{s.label}</span>
@@ -124,7 +104,6 @@ function CheckoutPage() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-5">
-        {/* Form */}
         <div className="lg:col-span-3">
           {step === 1 && (
             <div className="animate-fade-in space-y-5">
@@ -163,7 +142,7 @@ function CheckoutPage() {
                   </div>
                 </div>
               </div>
-              <Button variant="brand" size="lg" className="w-full" onClick={() => { if (validateShipping()) setStep(2); }}>
+              <Button className="w-full h-12 rounded-full bg-foreground text-background hover:bg-foreground/90 font-semibold" onClick={() => { if (validateShipping()) setStep(2); }}>
                 Continue to Payment
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -176,7 +155,7 @@ function CheckoutPage() {
               <div className="rounded-xl border border-border bg-surface p-4">
                 <div className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
                   <Lock className="h-3.5 w-3.5" />
-                  <span>This is a <strong>simulated payment</strong> — no real charges will be made.</span>
+                  <span>This is a <strong>simulated payment</strong> — no real charges.</span>
                 </div>
                 <div className="space-y-4">
                   <div>
@@ -202,8 +181,8 @@ function CheckoutPage() {
                 </div>
               </div>
               <div className="flex gap-3">
-                <Button variant="outline" size="lg" onClick={() => setStep(1)}>Back</Button>
-                <Button variant="brand" size="lg" className="flex-1" onClick={() => { if (validatePayment()) setStep(3); }}>
+                <Button variant="outline" className="rounded-full" onClick={() => setStep(1)}>Back</Button>
+                <Button className="flex-1 h-12 rounded-full bg-foreground text-background hover:bg-foreground/90 font-semibold" onClick={() => { if (validatePayment()) setStep(3); }}>
                   Review Order
                   <ChevronRight className="h-4 w-4" />
                 </Button>
@@ -214,16 +193,16 @@ function CheckoutPage() {
           {step === 3 && (
             <div className="animate-fade-in space-y-5">
               <h2 className="text-xl font-bold text-foreground">Review Your Order</h2>
-              <div className="rounded-xl border border-border bg-card p-5 space-y-3">
-                <h3 className="text-sm font-semibold text-foreground">Shipping to</h3>
+              <div className="rounded-xl border border-border bg-card p-5 space-y-2">
+                <h3 className="text-sm font-bold text-foreground">Shipping to</h3>
                 <p className="text-sm text-muted-foreground">{form.name}<br />{form.address}<br />{form.city}, {form.state} {form.zip}<br />{form.email}</p>
               </div>
-              <div className="rounded-xl border border-border bg-card p-5 space-y-3">
-                <h3 className="text-sm font-semibold text-foreground">Payment</h3>
+              <div className="rounded-xl border border-border bg-card p-5 space-y-2">
+                <h3 className="text-sm font-bold text-foreground">Payment</h3>
                 <p className="text-sm text-muted-foreground">Card ending in {form.cardNumber.replace(/\s/g, "").slice(-4)}</p>
               </div>
               <div className="rounded-xl border border-border bg-card p-5">
-                <h3 className="mb-3 text-sm font-semibold text-foreground">Items ({items.length})</h3>
+                <h3 className="mb-3 text-sm font-bold text-foreground">Items ({items.length})</h3>
                 <div className="space-y-3">
                   {items.map((item) => (
                     <div key={item.product.id} className="flex items-center gap-3">
@@ -232,16 +211,16 @@ function CheckoutPage() {
                         <p className="truncate text-sm font-medium text-foreground">{item.product.title}</p>
                         <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
                       </div>
-                      <p className="text-sm font-medium text-foreground">${(item.product.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-sm font-medium text-foreground">USD {(item.product.price * item.quantity).toFixed(2)}</p>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="flex gap-3">
-                <Button variant="outline" size="lg" onClick={() => setStep(2)}>Back</Button>
-                <Button variant="brand" size="xl" className="flex-1" onClick={handlePlaceOrder}>
+                <Button variant="outline" className="rounded-full" onClick={() => setStep(2)}>Back</Button>
+                <Button className="flex-1 h-12 rounded-full bg-foreground text-background hover:bg-foreground/90 font-semibold" onClick={handlePlaceOrder}>
                   <Lock className="h-4 w-4" />
-                  Place Order — ${orderTotal.toFixed(2)}
+                  Place Order — USD {orderTotal.toFixed(2)}
                 </Button>
               </div>
             </div>
@@ -250,8 +229,8 @@ function CheckoutPage() {
 
         {/* Order Summary sidebar */}
         <div className="lg:col-span-2">
-          <div className="sticky top-24 rounded-xl border border-border bg-card p-5">
-            <h3 className="mb-4 text-sm font-semibold text-foreground">Order Summary</h3>
+          <div className="sticky top-28 rounded-xl border border-border bg-card p-5">
+            <h3 className="mb-4 text-sm font-bold text-foreground">Order Summary</h3>
             <div className="space-y-2 text-sm">
               {items.map((item) => (
                 <div key={item.product.id} className="flex items-center gap-3">
@@ -260,14 +239,14 @@ function CheckoutPage() {
                     <p className="truncate text-xs text-foreground">{item.product.title}</p>
                     <p className="text-xs text-muted-foreground">×{item.quantity}</p>
                   </div>
-                  <p className="text-xs font-medium text-foreground">${(item.product.price * item.quantity).toFixed(2)}</p>
+                  <p className="text-xs font-medium text-foreground">USD {(item.product.price * item.quantity).toFixed(2)}</p>
                 </div>
               ))}
             </div>
             <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span className="text-foreground">${totalPrice.toFixed(2)}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span className="text-foreground">{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span></div>
-              <div className="flex justify-between border-t border-border pt-2 text-base font-bold"><span className="text-foreground">Total</span><span className="text-foreground">${orderTotal.toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span className="text-foreground">USD {totalPrice.toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span className="text-foreground">{shipping === 0 ? "FREE" : `USD ${shipping.toFixed(2)}`}</span></div>
+              <div className="flex justify-between border-t border-border pt-2 text-base font-bold"><span className="text-foreground">Total</span><span className="text-foreground">USD {orderTotal.toFixed(2)}</span></div>
             </div>
           </div>
         </div>
